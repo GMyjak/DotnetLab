@@ -56,7 +56,7 @@ namespace Lab3
             {
                 for (int j = 0; j < m; j++)
                 {
-                    swap(i, j, matrix1.GetLength(0) - i - 1, j, matrix1);
+                    //swap(i, j, matrix1.GetLength(0) - i - 1, j, matrix1);
                     int temp = matrix1[i, j];
                     matrix1[i, j] = matrix1[matrix1.GetLength(0) - i - 1, j];
                     matrix1[matrix1.GetLength(0) - i - 1, j] = temp;
