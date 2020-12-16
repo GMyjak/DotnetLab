@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Lab6.Task1;
 using Lab6.Task2;
 
@@ -74,16 +75,25 @@ namespace Lab6
 
             Console.WriteLine("Truck load sum with 'is' operator: " + SumLoadIs(vehicleAuctionList));
             Console.WriteLine("Truck load sum with 'as' operator: " + SumLoadAs(vehicleAuctionList));
+
+            // Lista 9
+            Console.WriteLine("Reflection:");
+            var sum = typeof(Program).GetMethod("SumLoadIs").Invoke(null, new object[] {vehicleAuctionList});
+            Console.WriteLine("Truck load sum with 'is' operator: " + sum);
+            sum = typeof(Program).GetMethod("SumLoadAs").Invoke(null, new object[] { vehicleAuctionList });
+            Console.WriteLine("Truck load sum with 'as' operator: " + sum);
+
+
         }
 
-        static double SumLoadIs(IEnumerable<Vehicle> vehicles)
+        public static double SumLoadIs(IEnumerable<Vehicle> vehicles)
         {
             return vehicles
                 .Where(v => v is Truck)
                 .Sum(v => ((Truck) v).LoadCapacityInKilograms);
         }
 
-        static double SumLoadAs(IEnumerable<Vehicle> vehicles)
+        public static double SumLoadAs(IEnumerable<Vehicle> vehicles)
         {
             return vehicles
                 .Select(v => v as Truck)

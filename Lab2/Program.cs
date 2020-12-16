@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Lab2
 {
-    class Program
+    public class Program
     {
         private static bool prompt = true;
         private static void Main(string[] args)
@@ -71,7 +71,11 @@ namespace Lab2
                 Console.WriteLine("Incorrect format");
                 return;
             }
+            //Console.WriteLine(SolveEquation(a,b,c,out _));
+        }
 
+        public static string SolveEquation(double a, double b, double c, out int numberOfSolutions)
+        {
             if (a != 0)
             {
                 // Quadratic equation
@@ -80,11 +84,15 @@ namespace Lab2
                 if (delta < 0)
                 {
                     Console.WriteLine("No solutions found");
+                    numberOfSolutions = 0;
+                    return "No solutions found";
                 }
                 else if (delta == 0)
                 {
                     double solution = -b / 2 / a;
                     Console.WriteLine("Solution: x = {0:0.#####}", solution);
+                    numberOfSolutions = 1;
+                    return string.Format("x = {0:0.#####}", solution);
                 }
                 else
                 {
@@ -94,6 +102,8 @@ namespace Lab2
                     x1 /= (2 * a);
                     x2 /= (2 * a);
                     Console.WriteLine($"Solution: x1 = {x1:0.#####} x2 = {x2:0.#####}");
+                    numberOfSolutions = 2;
+                    return $"x1 = {x1:0.#####} x2 = {x2:0.#####}";
                 }
             }
             else if (b != 0)
@@ -101,11 +111,15 @@ namespace Lab2
                 // Linear equation
                 double solution = -c / b;
                 Console.WriteLine("Solution: x = {0:0.#####}", solution);
+                numberOfSolutions = 1;
+                return $"x = {solution:0.#####}";
             }
             else
             {
                 // Horizontal line
                 Console.WriteLine(c == 0 ? "Solution: x = {R}" : "No solutions found");
+                numberOfSolutions = c == 0 ? -1 : 0;
+                return c == 0 ? "x = {R}" : "No solutions found";
             }
         }
 

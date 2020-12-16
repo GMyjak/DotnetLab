@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Równanie kwadratowe";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Equation</h3>
+<p style=@ViewBag.Color>
+    Ilość rozwiązań: @ViewBag.NumSolutions <br />
+    @{
+        if (ViewBag.NumSolutions != 0)
+        {
+            @:Rozwiązania: @ViewBag.Solution
+        }
+    }
+</p>
+

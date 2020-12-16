@@ -69,6 +69,13 @@ namespace Lab7
             // Display results in console
             if (result != null)
             {
+                // ZADANIE 1 L 9
+                int numOfItemsToDisplay = Math.Min(10, result.Count);
+                var elems = result.Take(numOfItemsToDisplay);
+                foreach (var kvpair in elems)
+                {
+                    Console.WriteLine($"{kvpair.Key} => {kvpair.Value}");
+                }
                 // This is how to display whole dict more effectively
                 //StringBuilder sb = new StringBuilder();
                 //foreach (var kvPair in result)
@@ -76,12 +83,11 @@ namespace Lab7
                 //    sb.Append($"{kvPair.Key} => {kvPair.Value}\n");
                 //}
                 //Console.WriteLine(sb);
-                var kvPairList = result.ToList();
-                int numOfItemsToDisplay = Math.Min(10, result.Count);
-                for (int i = 0; i < numOfItemsToDisplay; i++)
-                {
-                    Console.WriteLine($"{kvPairList[i].Key} => {kvPairList[i].Value}");
-                }
+                //var kvPairList = result.ToList();
+                //for (int i = 0; i < numOfItemsToDisplay; i++)
+                //{
+                //    Console.WriteLine($"{kvPairList[i].Key} => {kvPairList[i].Value}");
+                //}
             }
         }
 
@@ -118,6 +124,19 @@ namespace Lab7
                 }
             }
             reader.Close();
+
+            /////////////////////////////
+            var resultAltered = result
+                .OrderByDescending(pair => pair.Value)
+                .Take(10);
+
+            Console.WriteLine("LISTA 9");
+            foreach (var keyValuePair in resultAltered)
+            {
+                Console.WriteLine($"{keyValuePair.Key} => {keyValuePair.Value}");
+            }
+            Console.WriteLine("KONIEC L9");
+            /////////////////////////////
 
             var dictList = result.ToList();
             dictList.Sort((kv1, kv2) => kv2.Value - kv1.Value);
