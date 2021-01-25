@@ -351,3 +351,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Zipy do wysyłania prowadzącemu :)
+*.zip
+# Plik bez uprawnień do testów
+Lab7/forbidden.txt

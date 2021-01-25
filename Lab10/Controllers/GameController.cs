@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Lab10.Controllers
 {
     public class GameController : Controller
     {
-        private static int bound = -1;
-        private static int drawn = -1;
+        //private static int bound = -1;
+        //private static int drawn = -1;
+        private static readonly string boundCookieTag = "bound";
+        private static readonly string drawnCookieTag = "drawn";
 
         [Route("Set,{n}")]
         public IActionResult Set([FromRoute] int n)
@@ -18,7 +21,8 @@ namespace Lab10.Controllers
                 return View();
             }
 
-            bound = n;
+            HttpContext.Session.SetInt32(boundCookieTag, n);
+            //bound = n;
             
             ViewBag.Message = "Wartość graniczna ustawiona na " + n;
             ViewBag.Color = "color:green";
@@ -29,7 +33,8 @@ namespace Lab10.Controllers
         [Route("Draw")]
         public IActionResult Draw()
         {
-            if (bound == -1)
+            int? bound = HttpContext.Session.GetInt32(boundCookieTag);
+            if (bound == null)
             {
                 ViewBag.Message = "Wartość graniczna nie została jeszcze ustawiona\nUżyj opcji '/set,{n}'";
                 ViewBag.Color = "color:red";
@@ -37,7 +42,8 @@ namespace Lab10.Controllers
             }
 
             var rand = new Random();
-            drawn = rand.Next(bound);
+            int drawn = rand.Next(bound.Value);
+            HttpContext.Session.SetInt32(drawnCookieTag, drawn);
 
             ViewBag.Message = "Wartość została wylosowana: ???";
             ViewBag.Color = "color:black";
@@ -48,7 +54,8 @@ namespace Lab10.Controllers
         [Route("Guess,{n}")]
         public IActionResult Guess([FromRoute] int n)
         {
-            if (drawn == -1)
+            int? drawn = HttpContext.Session.GetInt32(drawnCookieTag);
+            if (drawn == null)
             {
                 ViewBag.Message = "Liczba nie została jeszcze wylosowana\nUżyj opcji '/draw'";
                 ViewBag.Color = "color:red";

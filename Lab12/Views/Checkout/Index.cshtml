@@ -1,0 +1,77 @@
+﻿@model Dictionary<Article, int>
+
+@{
+    ViewData["Title"] = "Shopping cart";
+}
+
+<div>
+    <div class="row">
+        <h2>Checkout</h2>
+    </div>
+    <div class="row">
+        <h4 style="color: darkgreen">Sum: $@Math.Round(Model.Sum(kvPair => kvPair.Key.Price * kvPair.Value), 2)</h4>
+    </div>
+    <div class="row">
+        @if (Model.Count == 0)
+        {
+            <p style="color: red">
+                Shopping cart is empty!
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Image
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Key.Name
+                            </td>
+                            <td>
+                                $@string.Format("{0:0.00}", item.Key.Price)
+                            </td>
+                            <td>
+                                @item.Key.Category.Name
+                            </td>
+                            <td>
+                                <img src="@(item.Key.ImagePath!=null?"/upload/"+item.Key.ImagePath:"/image/default.png")" alt="Image" style="max-width: 100px; max-height: 75px;" />
+                            </td>
+                            <td>
+                                @item.Value
+                            </td>
+                            <td>
+                                <a asp-action="AddOne" asp-route-id="@item.Key.Id">Add one</a> |
+                                <a asp-action="RemoveOne" asp-route-id="@item.Key.Id">Remove one</a> |
+                                <a asp-action="RemoveAll" asp-route-id="@item.Key.Id">Remove all</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
