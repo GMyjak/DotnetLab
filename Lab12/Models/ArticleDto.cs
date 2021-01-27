@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Lab12.Models
 {
@@ -19,10 +20,14 @@ namespace Lab12.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         [DisplayName("Price in $")]
         public double Price { get; set; }
+        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public IFormFile Image { get; set; }
 
         [DisplayName("Category")]
         public int CategoryId { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public Category Category { get; set; }
 
         public Article CastToArticle()

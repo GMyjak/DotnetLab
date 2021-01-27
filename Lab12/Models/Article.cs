@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Lab12.Models
 {
@@ -23,6 +24,8 @@ namespace Lab12.Models
         [ForeignKey("Category")]
         [DisplayName("Category")]
         public int CategoryId { get; set; }
+        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public Category Category { get; set; }
     }
 }

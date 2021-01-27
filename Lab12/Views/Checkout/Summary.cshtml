@@ -1,0 +1,45 @@
+﻿@model Dictionary<Article, int>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Summary";
+}
+
+<div>
+    <div class="row">
+        <h2>Checkout summary</h2>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Key.Name</td>
+                    <td>$@string.Format("{0:0.00}", item.Key.Price)</td><td>@item.Key.Category.Name</td>
+                    <td><img src="@(item.Key.ImagePath != null ? "/upload/" + item.Key.ImagePath : "/image/default.png")" alt="Image" style="max-width: 100px; max-height: 75px;"/></td>
+                    <td>@item.Value</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <h4>Checkout summary for @UserManager.GetUserName(User)</h4>
+    </div>
+    <div class="row">
+        <h4 style="color: darkgreen">Sum: $@Math.Round(Model.Sum(kvPair => kvPair.Key.Price * kvPair.Value), 2)</h4>
+    </div>
+</div>
+

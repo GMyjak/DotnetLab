@@ -5,12 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lab12.Data;
 using Lab12.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Lab12.Controllers
 {
+    
     public class CheckoutController : Controller
     {
         private static readonly string checkoutDataTag = "checkout";
@@ -136,6 +138,22 @@ namespace Lab12.Controllers
 
             return Redirect(Request.Headers["Referer"].ToString());
             //return Ok();
+        }
+
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Summary()
+        {
+            string cookie = Request.Cookies[checkoutDataTag] ?? "{}"; // Empty dict
+            Dictionary<int, int> itemsInCart =
+                JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie) ?? new Dictionary<int, int>();
+
+            var articles = await _context.Article.Include(art => art.Category).ToListAsync();
+            articles = articles.Where(art => itemsInCart.ContainsKey(art.Id)).ToList();
+
+            Dictionary<Article, int> model = new Dictionary<Article, int>();
+            articles.ForEach(art => model.Add(art, itemsInCart[art.Id]));
+
+            return View("Summary", model);
         }
     }
 }
